@@ -28,6 +28,7 @@ Passo 5 (opcional) - Qualquer dúvida, entre em contato comigo pelo linkedin ou 
 # Contato
 
 Linkedin: https://linkedin.com/in/victoralexandredasilvamarins
+<br/>
 email: victoralexandredasilvamarins@gmail.com
 
 Bye!
