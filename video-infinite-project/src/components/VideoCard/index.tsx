@@ -2,32 +2,42 @@ import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useIsInViewport } from '../UseVideoViewport';
 import { AspectRatio, Box, Link, Text } from '@chakra-ui/react';
 
+interface VideoCardProps {
+    index: number;
+    author: string;
+    videoURL: string;
+    authorLink: string;
+    lastVideoIndex: number;
+    getVideos: (numVideos: number) => void;
+}
+
 export function VideoCard({
     index,
     author,
     videoURL,
     authorLink,
     lastVideoIndex,
-    getVideos, }: any) {
-    const video = useRef();
+    getVideos,
+}: VideoCardProps) {
+    const video = useRef<HTMLVideoElement>(null);
     const isInViewport = useIsInViewport(video);
-    const [loadNewVidsAt, setloadNewVidsAt] = useState(lastVideoIndex);
+    const [loadNewVidsAt, setloadNewVidsAt] = useState<number>(lastVideoIndex);
 
     if (isInViewport) {
         setTimeout(() => {
-            video?.current?.play();
+            video.current?.play();
         }, 1000);
 
-        if (loadNewVidsAt === Number(video?.current?.id)) {
-            setloadNewVidsAt((prev) => prev + 2);
+        if (loadNewVidsAt === Number(video.current?.id)) {
+            setloadNewVidsAt((prev: number) => prev + 2);
             getVideos(3);
         }
     }
 
     const togglePlay = () => {
-        let currentVideo = video?.current;
-        if (currentVideo.paused) {
-            currentVideo?.play();
+        const currentVideo = video.current;
+        if (currentVideo && currentVideo.paused) {
+            currentVideo.play();
         } else {
             currentVideo?.pause();
         }
@@ -35,7 +45,7 @@ export function VideoCard({
 
     useEffect(() => {
         if (!isInViewport) {
-            video?.current?.pause();
+            video.current?.pause();
         }
     }, [isInViewport]);
 
@@ -59,17 +69,17 @@ export function VideoCard({
                     muted
                     ref={video}
                     onClick={togglePlay}
-                    id={index}
+                    id={index.toString()}
                     autoPlay={index === 1}
                 >
                     <source src={videoURL} type="video/mp4" />
                 </video>
             </AspectRatio>
-            <Box 
-                p={"10px"} 
-                position={"relative"} 
-                top={"10%"} 
-                color={"white"} 
+            <Box
+                p={"10px"}
+                position={"relative"}
+                top={"10%"}
+                color={"white"}
                 onClick={togglePlay}
             >
                 <Text>@{author}</Text>
@@ -79,4 +89,4 @@ export function VideoCard({
             </Box>
         </Box>
     );
-};
+}

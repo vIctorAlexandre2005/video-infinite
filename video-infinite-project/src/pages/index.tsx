@@ -20,7 +20,9 @@ export default function Home() {
     client.videos
       .search({ query, per_page: length })
       .then((result) => {
-        setvideos((oldVideos) => [...oldVideos, ...result.videos]);
+        if ('videos' in result) {
+          setvideos((oldVideos: any) => [...oldVideos, ...result.videos]);
+      }
         setvideosLoaded(true);
       })
       .catch((e) => setvideosLoaded(false));
